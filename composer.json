@@ -1,0 +1,32 @@
+{
+    "name": "infotech/file-storage",
+    "description": "File storage abstraction layer for Yii Framework.",
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "Anton Tyutin",
+            "email": "anton@tyutin.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "yiisoft/yii": "dev-master"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Infotech\\FileStorage\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "vendor/yiisoft/yii/framework/base/",
+            "vendor/yiisoft/yii/framework/db/"
+        ],
+        "files": [
+            "vendor/yiisoft/yii/framework/yii.php"
+        ]
+    }
+}
