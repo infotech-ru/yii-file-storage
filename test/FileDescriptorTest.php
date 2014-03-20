@@ -51,6 +51,18 @@ class FileDescriptorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/tmp/some', $file->getDirname());
     }
 
+    public function testGetPath()
+    {
+        $file = new FileDescriptor('/tmp/some/file');
+        $this->assertEquals('/tmp/some/file', $file->getPath());
+
+        $file = new FileDescriptor('file:///tmp/some/file');
+        $this->assertEquals('/tmp/some/file', $file->getPath());
+
+        $file = new FileDescriptor('some-scheme://tmp/some/file');
+        $this->assertEquals('tmp/some/file', $file->getPath());
+    }
+
     public function testGetUri()
     {
         $file = new FileDescriptor('/tmp/some/file');

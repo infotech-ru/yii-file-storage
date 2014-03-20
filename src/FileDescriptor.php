@@ -54,13 +54,23 @@ class FileDescriptor
     }
 
     /**
+     * Get file path
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return substr($this->uri, strpos($this->uri, '://') + 3);
+    }
+
+    /**
      * Get directory name of file
      *
      * @return string
      */
     public function getDirname()
     {
-        return dirname(substr($this->uri, strpos($this->uri, '://') + 3));
+        return dirname($this->getPath());
     }
 
     /**
