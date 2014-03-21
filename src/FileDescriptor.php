@@ -15,6 +15,7 @@ class FileDescriptor
 {
     const SCHEME_RESOURCE = 'resource';
     const SCHEME_LOCAL = 'file';
+    const MIME_TYPE_DEFAULT = 'application/octet-stream';
 
     /**
      * @var string
@@ -27,20 +28,44 @@ class FileDescriptor
     private $stream;
 
     /**
+     * @var string
+     */
+    private $mime;
+
+    /**
+     * @var integer
+     */
+    private $size;
+
+    /**
      * @param string|resource $uriOrResource    File URI ({@link http://php.net/manual/en/wrappers.php})
      *                                          or stream resource ({@link fopen()})
+     * @param integer         $size             File size in bytes.
      * @param string          $mimeType         Optional. File data MIME type.
+     * @throws FileDescriptorException if $uriOrResourse isn't neither string, nor resource
+     * @throws FileDescriptorException if uri is empty string
+     * @throws FileDescriptorException if file size is less then zero
      */
-    public function __construct($uriOrResource, $mimeType = null)
+    public function __construct($uriOrResource, $size, $mimeType = self::MIME_TYPE_DEFAULT)
     {
+        if ($size < 0) {
+            throw new FileDescriptorException();
+        }
+
         if (is_resource($uriOrResource)) {
             $this->stream = $uriOrResource;
             $this->uri = strtr(uniqid(self::SCHEME_RESOURCE . '://', true), '.', '/');
-        } else {
+        } elseif (is_string($uriOrResource)) {
+            if (!$uriOrResource) {
+                throw new FileDescriptorException();
+            }
             $hasScheme = strpos($uriOrResource, '://') !== false;
             $this->uri = ($hasScheme ? '' : self::SCHEME_LOCAL . '://') . $uriOrResource;
+        } else {
+            throw new FileDescriptorException();
         }
         $this->mime = $mimeType;
+        $this->size = $size;
     }
 
     /**
@@ -140,6 +165,22 @@ class FileDescriptor
             $contents = file_get_contents($this->uri);
         }
         return $contents;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMime()
+    {
+        return $this->mime;
     }
 
 } 
