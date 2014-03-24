@@ -3,7 +3,8 @@
  * @author Anton Tyutin <anton@tyutin.ru>
  */
 
-namespace Infotech\FileStorage;
+namespace Infotech\FileStorage\Storage;
+use Infotech\FileStorage\File\FileDescriptor;
 
 /**
  * File Storage Interface
@@ -15,7 +16,8 @@ interface StorageInterface
      * Fetch file from storage
      *
      * @param string $path
-     * @return FileDescriptor
+     * @return FileDescriptor|null File Descriptor or null if file not found
+     * @throws Exception\OperationFailureException if storage failure
      */
     public function get($path);
 
@@ -24,7 +26,7 @@ interface StorageInterface
      *
      * @param string $path
      * @param FileDescriptor $file
-     * @throws StorageException if storage failure
+     * @throws Exception\OperationFailureException if storage failure
      */
     public function put($path, FileDescriptor $file);
 
@@ -32,7 +34,7 @@ interface StorageInterface
      * Delete file from storage
      *
      * @param string $path
-     * @throws StorageException if storage failure
+     * @throws Exception\OperationFailureException if storage failure
      */
     public function delete($path);
 

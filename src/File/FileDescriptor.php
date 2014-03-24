@@ -3,7 +3,9 @@
  * @author Anton Tyutin <anton@tyutin.ru>
  */
 
-namespace Infotech\FileStorage;
+namespace Infotech\FileStorage\File;
+
+use Infotech\FileStorage\File\Exception\FileDescriptorCreationException;
 
 /**
  * File descriptor
@@ -15,6 +17,7 @@ class FileDescriptor
 {
     const SCHEME_RESOURCE = 'resource';
     const SCHEME_LOCAL = 'file';
+
     const MIME_TYPE_DEFAULT = 'application/octet-stream';
 
     /**
@@ -42,14 +45,14 @@ class FileDescriptor
      *                                          or stream resource ({@link fopen()})
      * @param integer         $size             File size in bytes.
      * @param string          $mimeType         Optional. File data MIME type.
-     * @throws FileDescriptorException if $uriOrResourse isn't neither string, nor resource
-     * @throws FileDescriptorException if uri is empty string
-     * @throws FileDescriptorException if file size is less then zero
+     * @throws FileDescriptorCreationException if $uriOrResourse isn't neither string, nor resource
+     * @throws FileDescriptorCreationException if uri is empty string
+     * @throws FileDescriptorCreationException if file size is less then zero
      */
     public function __construct($uriOrResource, $size, $mimeType = self::MIME_TYPE_DEFAULT)
     {
         if ($size < 0) {
-            throw new FileDescriptorException();
+            throw new FileDescriptorCreationException();
         }
 
         if (is_resource($uriOrResource)) {
@@ -57,12 +60,12 @@ class FileDescriptor
             $this->uri = strtr(uniqid(self::SCHEME_RESOURCE . '://', true), '.', '/');
         } elseif (is_string($uriOrResource)) {
             if (!$uriOrResource) {
-                throw new FileDescriptorException();
+                throw new FileDescriptorCreationException();
             }
             $hasScheme = strpos($uriOrResource, '://') !== false;
             $this->uri = ($hasScheme ? '' : self::SCHEME_LOCAL . '://') . $uriOrResource;
         } else {
-            throw new FileDescriptorException();
+            throw new FileDescriptorCreationException();
         }
         $this->mime = $mimeType;
         $this->size = $size;

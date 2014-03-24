@@ -5,6 +5,7 @@
 
 namespace Infotech\FileStorage;
 
+use Infotech\FileStorage\File\FileDescriptor;
 use PHPUnit_Framework_TestCase;
 
 class FileDescriptorTest extends PHPUnit_Framework_TestCase
@@ -19,7 +20,7 @@ class FileDescriptorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Infotech\FileStorage\FileDescriptorException
+     * @expectedException \Infotech\FileStorage\File\Exception\FileDescriptorCreationException
      */
     public function testCreateWrongSize()
     {
@@ -28,7 +29,7 @@ class FileDescriptorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideCreateWrongPath
-     * @expectedException Infotech\FileStorage\FileDescriptorException
+     * @expectedException \Infotech\FileStorage\File\Exception\FileDescriptorCreationException
      */
     public function testCreateWrongPath($wrongPath)
     {
