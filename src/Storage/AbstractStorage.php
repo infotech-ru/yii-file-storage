@@ -66,7 +66,7 @@ abstract class AbstractStorage extends CApplicationComponent implements StorageI
     public function put($path, FileDescriptor $file)
     {
         $localPath = $this->createUri($path);
-        if (false === copy($localPath, $file->getUri())) {
+        if (false === copy($file->getUri(), $localPath)) {
             throw new Exception\OperationFailureException('Can\'t create file ' . $path . '.');
         }
     }
