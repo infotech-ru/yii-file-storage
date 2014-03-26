@@ -29,12 +29,12 @@ abstract class AbstractStorage extends CApplicationComponent implements StorageI
 
     public function delete($path)
     {
-        unlink($path);
+        unlink($this->createUri($path));
     }
 
     public function exists($path)
     {
-        return file_exists($path);
+        return file_exists($this->createUri($path));
     }
 
     /**
