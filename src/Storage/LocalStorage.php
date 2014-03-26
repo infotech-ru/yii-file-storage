@@ -18,15 +18,22 @@ class LocalStorage extends AbstractStorage
             throw new Exception\ConfigurationException('The "basePath" parameter must be specified.');
         }
         if (!is_dir($this->basePath)) {
-            throw new Exception\ConfigurationException('The specified basePath not exists or isn\'t a directory.');
+            throw new Exception\ConfigurationException(
+                'The specified basePath ' . $this->basePath . ' not exists or isn\'t a directory.'
+            );
         }
     }
 
     public function put($path, FileDescriptor $file)
     {
-        if (false === mkdir(dirname($this->createLocalPath($path)), 0777, true)) {
-            throw new Exception\OperationFailureException('Path creation failure');
+        $dirName = dirname($this->createLocalPath($path));
+        $isExists = file_exists($dirName);
+        if ($isExists && !is_dir($dirName)) {
+            throw new Exception\OperationFailureException('Path ' . dirname($path) . ' exists but it isn\'t dir');
+        } elseif (!$isExists && false === mkdir($dirName, 0777, true)) {
+            throw new Exception\OperationFailureException('Failed to create path ' . dirname($path));
         }
+
         parent::put($path, $file);
     }
 
