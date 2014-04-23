@@ -17,6 +17,29 @@ class LocalStorage extends AbstractStorage
 {
     public $basePath;
 
+    /**
+     * Delete local file
+     *
+     * @param string  $path
+     * @param boolean $deleteDir
+     *
+     * @return void
+     */
+    public function delete($path, $deleteDir = true)
+    {
+        // Prevent an attemp to delete nonexistent file
+        if ('' !== ($path = strval($path))) {
+
+            // Supress all warnings
+            @parent::delete($path);
+
+            // Check if dir is empty
+            if (!empty($deleteDir) && 0 >= count(glob(($dir = dirname($this->createLocalPath($path))) . '/*'))) {
+                @rmdir($dir);
+            }
+        }
+    }
+
     protected function checkConfig()
     {
         if (null === $this->basePath) {
