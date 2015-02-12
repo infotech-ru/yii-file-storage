@@ -8,9 +8,9 @@
             "email": "anton@tyutin.ru"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require-dev": {
-        "yiisoft/yii": "dev-master"
+        "yiisoft/yii": "~1.1"
     },
     "config": {
         "bin-dir": "bin"
