@@ -22,11 +22,6 @@ class LocalStorage extends AbstractStorage
         if (null === $this->basePath) {
             throw new Exception\ConfigurationException('The "basePath" parameter must be specified.');
         }
-        if (!is_dir($this->basePath)) {
-            throw new Exception\ConfigurationException(
-                'The specified basePath ' . $this->basePath . ' not exists or isn\'t a directory.'
-            );
-        }
     }
 
     public function put($path, FileDescriptor $file)
