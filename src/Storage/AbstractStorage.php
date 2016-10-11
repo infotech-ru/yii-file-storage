@@ -34,7 +34,7 @@ abstract class AbstractStorage extends CApplicationComponent implements StorageI
 
     public function delete($path)
     {
-        unlink($this->createUri($path));
+        @unlink($this->createUri($path));
     }
 
     public function exists($path)

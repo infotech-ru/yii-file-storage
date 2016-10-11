@@ -10,7 +10,7 @@
     ],
     "minimum-stability": "dev",
     "require-dev": {
-        "yiisoft/yii": "dev-master"
+        "yiisoft/yii": "^1.1"
     },
     "config": {
         "bin-dir": "bin"
