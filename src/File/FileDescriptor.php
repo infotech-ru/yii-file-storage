@@ -56,22 +56,20 @@ class FileDescriptor
      */
     public function __construct($uriOrResource, $size, $mimeType = self::MIME_TYPE_DEFAULT)
     {
-        if ($size < 0) {
-            throw new FileDescriptorCreationException();
+        if (!$uriOrResource || $size < 0) {
+            throw new FileDescriptorCreationException('Empty URI or Resource specified');
         }
 
         if (is_resource($uriOrResource)) {
             $this->stream = $uriOrResource;
             $this->uri = strtr(uniqid(self::SCHEME_RESOURCE . '://', true), '.', '/');
         } elseif (is_string($uriOrResource)) {
-            if (!$uriOrResource) {
-                throw new FileDescriptorCreationException();
-            }
             $hasScheme = strpos($uriOrResource, '://') !== false;
             $this->uri = ($hasScheme ? '' : self::SCHEME_LOCAL . '://') . $uriOrResource;
         } else {
-            throw new FileDescriptorCreationException();
+            throw new FileDescriptorCreationException('Unknown type');
         }
+
         $this->mime = $mimeType;
         $this->size = $size;
     }
